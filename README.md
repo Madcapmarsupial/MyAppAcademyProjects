@@ -1,2 +1,2 @@
 # MyAppAcademyProjects
-repo for my A/a homework
+A single repo for my A/a homework
