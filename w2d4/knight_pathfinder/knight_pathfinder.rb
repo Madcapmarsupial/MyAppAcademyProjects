@@ -59,6 +59,24 @@ class KnightPathFinder
         @root_node
     end
 
+    def find_path(end_pos)
+        target = @root_node.bfs(end_pos)
+        trace_path_back(target)
+    end
+    
+    def trace_path_back(end_node)
+        last_step = end_node
+        positions = [last_step]
+        until last_step == @root_node
+            last_step = last_step.parent
+            positions.unshift(last_step)
+        end
+        positions
+    
+    end
+
+
+
     def inspect
         {
           root: @root_node.value,
