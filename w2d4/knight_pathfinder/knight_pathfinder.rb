@@ -1,13 +1,8 @@
-require "00_tree_node.rb"
+require_relative "00_tree_node.rb"
+require 'byebug'
 
 class KnightPathFinder
  
-    def initialize(start_pos)
-        @root_node = PolyTreeNode.new(start_pos)
-        @considered_positions = [start_pos]
-        @tree = self.build_move_tree(start_pos)
-    end
-
     def self.valid_moves(pos)
         moves = [
             [2, 1], [2, -1], [-2, -1], 
@@ -21,24 +16,60 @@ class KnightPathFinder
             pair
         end
         #check for boundries
-       moves 
+        moves.select!{ |pair| pair.all? {|num| num > -1 && num < 9} } || moves
     end
 
-    def build_move_tree(pos)
-        new_move_positions(pos)
-        
+    def initialize(start_pos)
+        @root_node = PolyTreeNode.new(start_pos)
+        @considered_positions = [start_pos]
+
+        self.build_move_tree(@root_node)
     end
+
 
     def new_move_positions(pos)
-        moves = self.valid_moves(pos).difference(@considered_positions)
+        all_moves = KnightPathFinder.valid_moves(pos)
+        moves = all_moves - @considered_positions
         @considered_positions += moves 
         moves
     end
+
+    def build_move_tree(root_node)
+        #move_list = new_move_positions(node.valid_moves)
+        
+        queue = []
+        queue << root_node
+        until queue.empty?
+            node = queue.shift
+            children = new_move_positions(node.value)
+            children.map! { |pos| PolyTreeNode.new(pos) }
+            children.each { |child| node.add_child(child) }
+            queue += children
+            #turn them to nodes
+            #mark them as children
+            #add them to queue 
+
+            #return node if node.value == target_value
+            queue += node.children
+        end
+        nil
+    end
+
+    def root
+        @root_node
+    end
+
+    def inspect
+        {
+          root: @root_node.value,
+          children: @root_node.children
+        }
+    end 
       
 
 end
 
 
 kpf = KnightPathFinder.new([0, 0])
-p kpf.find_path([2, 1]) # => [[0, 0], [2, 1]]
-p kpf.find_path([3, 3]) # => [[0, 0], [2, 1], [3, 3]]
+#p kpf.find_path([2, 1]) # => [[0, 0], [2, 1]]
+#p kpf.find_path([3, 3]) # => [[0, 0], [2, 1], [3, 3]]

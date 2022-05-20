@@ -49,7 +49,7 @@ class PolyTreeNode
    def inspect
         {
             value: self.value,
-            children: self.children
+            children: self.children.length
         }
    end
 
