@@ -1,5 +1,4 @@
 require_relative 'tic_tac_toe'
-require 'byebug'
 
 class TicTacToeNode
   def initialize(board, next_mover_mark, prev_move_pos = nil)
@@ -12,56 +11,50 @@ class TicTacToeNode
 
   def losing_node?(evaluator)
     if board.over?
-     if board.winner == next_mover_mark
-      return true
-     elsif  board.winner == nil || board.winner == evaluator
-      return false
-     end
+     return board.winner != evaluator && board.won?
     end
 
-     return self.children.any? { |child| child.losing_node?(evaluator) } 
+    if self.next_mover_mark == evaluator
+      return self.children.all? { |child| child.losing_node?(evaluator)}
+    else 
+      return self.children.any? { |child| child.losing_node?(evaluator)}
+    end
   end
+
 
   def winning_node?(evaluator)
     if board.over?
-      if board.winner == evaluator
-       return true
-      elsif  board.winner == nil || board.winner == next_mover_mark
-       return false
-      end
-     end
- 
-      return self.children.any? { |child| child.winning_node?(evaluator) } 
-  end
+      return board.winner == evaluator
+    end
 
-  def switch_mark  
-    case next_mover_mark
-      when nil
-        return :o
-      when :x
-        return :o
-      when :o
-        return :x
-      end
+    if self.next_mover_mark == evaluator
+      self.children.any? { |node| node.winning_node?(evaluator) }
+    else
+      self.children.all? { |node| node.winning_node?(evaluator) }
+    end
   end
 
   # This method generates an array of all moves that can be made after
   # the current move.
   def children
-     moves_list = []
-     (0...board.rows.length).each do |i|
+    moves_list = []
+
+    (0...board.rows.length).each do |i|
       (0...board.rows[i].length).each do |j|
-        current_pos = [i, j]
-        if board.empty?(current_pos)
-          new_board = board.dup
-          new_board[current_pos] = next_mover_mark 
-          prev_move_pos = current_pos
-          mark = switch_mark
-          move = TicTacToeNode.new(new_board, mark, prev_move_pos) 
-          moves_list << move 
-        end
+        pos = [i, j]
+
+        next unless board.empty?(pos)
+
+        new_board = board.dup
+        new_board[pos] = next_mover_mark 
+        next_mover_mark = (self.next_mover_mark == :x ? :o : :x)
+        moves_list << TicTacToeNode.new(new_board, next_mover_mark, pos) 
+ 
       end
-     end
-     moves_list
+    end
+    moves_list
   end
 end
+
+
+

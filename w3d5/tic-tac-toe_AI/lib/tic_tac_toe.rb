@@ -213,8 +213,3 @@ if __FILE__ == $PROGRAM_NAME
   TicTacToe.new(hp, cp).run
 end
 
-
-
-# node.board[[0, 0]] = :x node.board[[0, 1]] = :o node.board[[0, 2]] = :x
-# node.board[[1, 0]] = :o node.board[[1, 1]] = :x node.board[[1, 2]] = :o
-# node.board[[2, 0]] = :o node.board[[2, 1]] = :x 
