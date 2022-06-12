@@ -12,7 +12,7 @@ class Knight < Piece
     end
 
     def symbol
-        :K
+        :H
     end
 
     protected

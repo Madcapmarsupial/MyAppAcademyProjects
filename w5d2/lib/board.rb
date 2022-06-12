@@ -1,5 +1,6 @@
 require_relative "piece.rb"
 require_relative "null_piece.rb"
+require "byebug"
 
 class Board 
     attr_reader :rows
@@ -10,20 +11,37 @@ class Board
     end 
 
     def populate
-        @rows.each_with_index do |row, y|
-            row.each_with_index do |square, x|
-                if  y < 2 
-                    #add_piece
-                    @rows[y][x] = Piece.new("white", self, [y, x])
-                elsif y > 5 
-                    @rows[y][x] = Piece.new("black", self, [y, x])
-                else
-                    @rows[y][x] = Nullpiece.instance
-                end
-            end 
-        end
+        (2..5).each { |y| (0..7).each { |x| self[[y,x]] = Nullpiece.instance } }
+        set_pieces("white")
+        set_pieces("black")
+
     end
         
+    def set_pieces(color)
+        color == "white" ? (y1, y2 = 0, 1) : (y1, y2 = 7, 6)
+        (0..7).each do |x|
+            self[[y2, x]] = Pawn.new(color, self, [y2, x])
+            case x 
+            when 0 
+                self[[y1, x]] = Rook.new(color, self, [y1, x])
+            when 1
+                self[[y1, x]] = Knight.new(color, self, [y1, x])
+            when 2 
+                self[[y1, x]] = Bishop.new(color, self, [y1, x])
+            when 3 
+                self[[y1, x]] = King.new(color, self, [y1, x])
+            when 4
+                self[[y1, x]] = Queen.new(color, self, [y1, x])
+            when 5
+                self[[y1, x]] = Bishop.new(color, self, [y1, x])
+            when 6
+                self[[y1, x]] = Knight.new(color, self, [y1, x])
+            when 7 
+                self[[y1, x]] = Rook.new(color, self, [y1, x])
+            end
+        end
+    end 
+
     def [](pos)
         @rows[pos[0]][pos[1]]
     end
@@ -38,7 +56,6 @@ class Board
         self.move_piece!(color, start_pos, end_pos)
         self[end_pos], self[start_pos] = self[start_pos], Nullpiece.instance
         nil
-        
     end
 
     def valid_pos?(pos)

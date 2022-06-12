@@ -18,6 +18,5 @@ class Bishop < Piece
 
     def move_dirs
         [[-1, 1], [1,-1], [-1,-1], [1, 1] ]
-        #up down left
     end
 end
