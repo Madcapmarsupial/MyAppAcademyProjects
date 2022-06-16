@@ -4,7 +4,7 @@ class Pawn < Piece
         super
     end
 
-    def valid_moves
+    def moves
         forward_steps + side_attacks
     end
 
@@ -33,11 +33,19 @@ class Pawn < Piece
     end
 
     def side_attacks
-        y, x = pos
-        left, right = [y + forward_dir, x - 1], [y + forward_dir, x + 1]
         sides = []
-        sides << left if board[left].color != color && !board[left].empty?
-        sides << right if board[right].color != color && !board[right].empty?
+        y, x = pos
+
+        left = [y + forward_dir, x - 1]
+        if @board.valid_pos?(left)
+         sides << left if board[left].color != color && !board[left].empty?
+        end
+
+        right = [y + forward_dir, x + 1]
+        if @board.valid_pos?(right)
+            sides << right if board[right].color != color && !board[right].empty?
+        end
+        
         sides
     end 
 

@@ -7,8 +7,8 @@ class Knight < Piece
         super
     end
 
-    def valid_moves
-        moves
+    def moves
+        stepable_moves
     end
 
     def symbol

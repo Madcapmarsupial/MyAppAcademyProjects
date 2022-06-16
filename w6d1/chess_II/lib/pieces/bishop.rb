@@ -6,8 +6,8 @@ class Bishop < Piece
         super
     end
 
-    def valid_moves
-        moves 
+    def moves
+        slideable_moves 
     end
 
     def symbol

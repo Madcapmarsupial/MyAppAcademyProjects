@@ -10,25 +10,13 @@ module Slideable
     def diagonal_dirs
     end
 
-   def moves
-        #should return an array of places a Piece can move to.
-
-        # The Slideable module can implement #moves, 
-        # but it needs to know what directions a piece can move in (diagonal, horizontally/vertically, both). 
-        # Classes that include the module Slideable (Bishop/Rook/Queen) 
-        # will need to implement a method #move_dirs, which #moves will use.
-
-      # valid_moves = []
-      # valid_moves += horizontal_dirs if self.move_dirs.include?(:horizontal)
-      # valid_moves += diagonal_dirs if self.move_dirs.include?(:diagonal)
-
+   def slideable_moves
       move_list = []
-
       directions = move_dirs
       
       directions.each do |direction|
          dx, dy = direction
-         move_list << grow_unblocked_move_in_dir(dx, dy)
+         move_list += grow_unblocked_move_in_dir(dx, dy)
       end
       move_list
    end

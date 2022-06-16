@@ -1,4 +1,5 @@
 require_relative "pieces.rb"
+require 'byebug'
 
 class Board 
     attr_reader :rows
@@ -12,7 +13,6 @@ class Board
         (2..5).each { |y| (0..7).each { |x| self[[y,x]] = Nullpiece.instance } }
         set_pieces("white")
         set_pieces("black")
-
     end
         
     def set_pieces(color)
@@ -57,24 +57,52 @@ class Board
     end
 
     def valid_pos?(pos)
+        y,x = pos
+        (y).between?(0, 7) && x.between?(0, 7)
     end
 
     def add_piece(piece, pos)
     end
 
     def checkmate?(color)
+        if in_check?(color) 
+            defenders = pieces.select { |piece| piece.color == color }
+            checkmate = defenders.any?(&:valid_moves)
+        end
+        checkmate
     end
 
     def in_check?(color)
+        check = false
+        target = find_king(color).pos
+        enemies = pieces.select do |piece| 
+            piece.color != color 
+        end
+
+        enemies.each do |enemy|
+            if enemy.moves.include?(target)
+                check = true
+            end
+        end
+        check
     end 
 
-    def in_check?(color)
-    end
+    
 
     def find_king(color)
+        kings = pieces.select { |piece| piece.class == King }
+        kings.first.color == color ? kings.first : kings.last
     end
 
     def pieces
+        piece_arr = Array.new
+        @rows.each do |col|
+           list = col.select do |piece|
+                piece.class != Nullpiece
+            end
+            piece_arr += list
+        end
+        return piece_arr
     end
 
     def dup
@@ -82,12 +110,10 @@ class Board
 
     def move_piece!(cloor, start_pos, end_pos)
         self[start_pos].pos = end_pos
-        
-
     end
 
     private 
-        @null_piece = Nullpiece.instance
+    @null_piece = Nullpiece.instance
 
 
 end

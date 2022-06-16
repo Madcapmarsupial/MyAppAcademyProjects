@@ -6,8 +6,8 @@ class Queen < Piece
         super
     end
 
-    def valid_moves
-        moves #(move_dirs, self)
+    def moves
+        slideable_moves #(move_dirs, self)
     end
 
     def symbol

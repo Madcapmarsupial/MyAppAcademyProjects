@@ -1,12 +1,14 @@
+
 module Stepable 
 
     def valid_pos(position)
+        return false unless (position[0].between?(0, 7) && position[1].between?(0, 7))
         return false if board[position].color == color
-        return false if !position[0].between?(0, 7) || !position[1].between?(0, 7)
         true
     end 
-
-    def moves
+    
+    
+    def stepable_moves
         y, x = pos 
         possible_moves = []
         move_diffs.each do |dir|

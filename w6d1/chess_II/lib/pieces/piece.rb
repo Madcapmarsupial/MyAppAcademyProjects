@@ -15,6 +15,9 @@ class Piece
        
     end
 
+    # def moves
+    # end
+
     def symbol
         :X
     end
