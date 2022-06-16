@@ -18,11 +18,9 @@ class King < Piece
     protected
 
     def move_diffs
-       #up down left
        [
         [-1, 0], [1,0], [0,-1], [0, 1],    
         [-1, 1], [1,-1], [-1,-1], [1, 1]
         ]
-    #diagonals
     end
 end

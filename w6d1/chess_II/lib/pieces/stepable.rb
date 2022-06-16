@@ -22,8 +22,8 @@ module Stepable
         possible_moves
     end
 
-    # private 
-    #     def move_diffs
+     private 
+        def move_diffs
 
-    #     end
+        end
 end

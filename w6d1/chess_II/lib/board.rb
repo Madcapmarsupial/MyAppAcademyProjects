@@ -87,8 +87,6 @@ class Board
         check
     end 
 
-    
-
     def find_king(color)
         kings = pieces.select { |piece| piece.class == King }
         kings.first.color == color ? kings.first : kings.last

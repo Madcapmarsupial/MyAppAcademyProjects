@@ -7,7 +7,7 @@ class Queen < Piece
     end
 
     def moves
-        slideable_moves #(move_dirs, self)
+        slideable_moves 
     end
 
     def symbol
@@ -17,11 +17,6 @@ class Queen < Piece
     private
 
     def move_dirs
-        #up down left
-        [
-            [-1, 0], [1,0], [0,-1], [0, 1],    
-            [-1, 1], [1,-1], [-1,-1], [1, 1]
-        ]
-        #diagonals
+        horizontal_dirs + diagonal_dirs
     end
 end

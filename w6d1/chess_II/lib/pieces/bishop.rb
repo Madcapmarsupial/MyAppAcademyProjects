@@ -17,6 +17,6 @@ class Bishop < Piece
     private
 
     def move_dirs
-        [[-1, 1], [1,-1], [-1,-1], [1, 1] ]
+        diagonal_dirs
     end
 end

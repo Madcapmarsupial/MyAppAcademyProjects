@@ -17,7 +17,6 @@ class Rook < Piece
     private
 
     def move_dirs
-        [[-1, 0], [1,0], [0,-1], [0, 1] ]
-        #up down left
+        horizontal_dirs
     end
 end
