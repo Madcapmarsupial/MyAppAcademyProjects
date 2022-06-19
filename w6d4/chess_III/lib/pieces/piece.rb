@@ -12,18 +12,17 @@ class Piece
     end
 
     def valid_moves
-       
+        moves.reject { |move| move_into_check?(move) }
     end
 
-    # def moves
-    # end
+    
 
     def symbol
         :X
     end
    
     def empty?
-       return self.symbol == :_
+       return self.class == Nullpiece
     end
 
     def pos=(val)
@@ -36,6 +35,9 @@ class Piece
 
     private
     def move_into_check?(end_pos)
+        copy = @board.dup
+        copy.move_piece!(@pos, end_pos)
+        copy.in_check?(@color)
     end
 
 

@@ -49,10 +49,13 @@ class Board
     end 
 
     def move_piece(color, start_pos, end_pos)
-        raise "no piece here (#{self[start_pos]}) to move" if self[start_pos] == nil
-        raise "invalid destination --> #{self[end_pos]}" if self[end_pos].color == color 
-        self.move_piece!(color, start_pos, end_pos)
+        raise "invalid move -> #{end_pos}, symbol: #{self[end_pos]}" unless self[start_pos].valid_moves.include?(end_pos)
+        raise "no piece here -> #{start_pos}, symbol: #{self[start_pos]}" if self[start_pos].empty?
+        raise "invalid destination -> #{end_pos}, symbol: #{self[end_pos]}" if self[end_pos].color == color 
+
+        self[start_pos].pos = end_pos
         self[end_pos], self[start_pos] = self[start_pos], Nullpiece.instance
+
         nil
     end
 
@@ -104,10 +107,23 @@ class Board
     end
 
     def dup
+        duped_board = Board.new
+        (0..7).each do |y|
+            (0..7).each do |x|
+                piece = self[[y, x]]
+                if self[[y, x]].empty?
+                    duped_board[[y, x]] = Nullpiece.instance 
+                else
+                    duped_board[[y, x]] = piece.class.new(piece.color, duped_board, piece.pos)
+                end
+            end
+        end
+        duped_board
     end
 
-    def move_piece!(cloor, start_pos, end_pos)
+    def move_piece!(start_pos, end_pos)
         self[start_pos].pos = end_pos
+        self[end_pos], self[start_pos] = self[start_pos], Nullpiece.instance
     end
 
     private 
