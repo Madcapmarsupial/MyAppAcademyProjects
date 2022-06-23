@@ -11,7 +11,7 @@ class Bishop < Piece
     end
 
     def symbol
-        :B
+        color == "black" ? :♝ : :♗
     end
 
     private

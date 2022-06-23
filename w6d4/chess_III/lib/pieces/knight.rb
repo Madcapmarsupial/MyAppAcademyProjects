@@ -12,7 +12,7 @@ class Knight < Piece
     end
 
     def symbol
-        :H
+        color == "black" ? :♞ : :♘
     end
 
     protected

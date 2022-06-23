@@ -11,7 +11,7 @@ class Queen < Piece
     end
 
     def symbol
-        :Q
+        color == "black" ? :♛ : :♕
     end
 
     private

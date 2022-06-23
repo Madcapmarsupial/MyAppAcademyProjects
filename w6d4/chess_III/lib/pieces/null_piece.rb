@@ -11,7 +11,7 @@ class Nullpiece < Piece
     
 
    def symbol
-       return  :_
+       return :" "
    end
 
     def color

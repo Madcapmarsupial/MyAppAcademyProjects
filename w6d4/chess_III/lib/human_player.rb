@@ -6,15 +6,14 @@ class Human < Player
     end
 
     def make_move(board)
-        #@display.cursor.get_input
 
         start, end_pos = nil, nil
-        until start != nil
-        @display.render
+        until start != nil && board[start].color == color.to_s
+            @display.render
             start = @display.cursor.get_input
         end
 
-        until end_pos != nil
+        until end_pos != nil  && board[end_pos].color != color.to_s
         @display.render
             end_pos = @display.cursor.get_input
         end

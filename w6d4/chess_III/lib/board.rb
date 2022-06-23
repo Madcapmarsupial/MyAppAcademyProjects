@@ -16,7 +16,7 @@ class Board
     end
         
     def set_pieces(color)
-        color == "white" ? (y1, y2 = 0, 1) : (y1, y2 = 7, 6)
+        color == "black" ? (y1, y2 = 0, 1) : (y1, y2 = 7, 6)
         (0..7).each do |x|
             self[[y2, x]] = Pawn.new(color, self, [y2, x])
             case x 
@@ -49,10 +49,10 @@ class Board
     end 
 
     def move_piece(color, start_pos, end_pos)
-        raise "invalid move -> #{end_pos}, symbol: #{self[end_pos]}" unless self[start_pos].valid_moves.include?(end_pos)
         raise "no piece here -> #{start_pos}, symbol: #{self[start_pos]}" if self[start_pos].empty?
         raise "invalid destination -> #{end_pos}, symbol: #{self[end_pos]}" if self[end_pos].color == color 
-
+        raise "invalid move -> #{end_pos}, symbol: #{self[end_pos]}" unless self[start_pos].valid_moves.include?(end_pos)
+        
         self[start_pos].pos = end_pos
         self[end_pos], self[start_pos] = self[start_pos], Nullpiece.instance
 
@@ -70,8 +70,9 @@ class Board
     def checkmate?(color)
         if in_check?(color) 
             defenders = pieces.select { |piece| piece.color == color }
-            checkmate = defenders.any?(&:valid_moves)
+            checkmate = defenders.none? { |defender| defender.valid_moves.length > 0  }
         end
+
         checkmate
     end
 

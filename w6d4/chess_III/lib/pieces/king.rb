@@ -12,7 +12,7 @@ class King < Piece
     end
 
     def symbol
-        :K
+        color == "black" ? :♚ : :♔
     end
 
     protected
