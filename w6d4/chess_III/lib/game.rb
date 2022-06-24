@@ -1,16 +1,17 @@
 require_relative 'board'
 require_relative 'display'
 require_relative 'human_player'
+require_relative 'ai_player'
+
 
 class Game
     def initialize(debug=false)
         @game_board = Board.new
         @display = Display.new(@game_board, debug)
         @player_1 = Human.new(:white, @display)
-        @player_2 = Human.new(:black, @display)
+        @player_2 = Ai_Player.new(:black, @display)
         @current_player = @player_1
     end
-
 
     def play
         # is player in check?
@@ -32,8 +33,6 @@ class Game
         p "GAME OVER #{@current_player.color} wins!"
     end
 
-
-
     private 
     def notify_players
         p "#{@current_player.color} -- YOUR TURN"
@@ -43,17 +42,18 @@ class Game
     def swap_turn!
         @current_player.color == :white ? @current_player = @player_2 : @current_player = @player_1
      end
+
 end
 
 
+# load "board.rb"
+# load "display.rb"
+# load "player.rb"
+# load "game.rb"
+# load "ai_player.rb"
+ g = Game.new(true)
 
+# bob = Ai_Player.new("black", g.display)
 
-
-
-
-
-
-
-g = Game.new(false)
 g.play
 

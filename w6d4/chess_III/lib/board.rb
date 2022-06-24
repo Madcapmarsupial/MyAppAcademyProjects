@@ -1,5 +1,4 @@
 require_relative "pieces.rb"
-require 'byebug'
 
 class Board 
     attr_reader :rows
@@ -15,31 +14,6 @@ class Board
         set_pieces("black")
     end
         
-    def set_pieces(color)
-        color == "black" ? (y1, y2 = 0, 1) : (y1, y2 = 7, 6)
-        (0..7).each do |x|
-            self[[y2, x]] = Pawn.new(color, self, [y2, x])
-            case x 
-            when 0 
-                self[[y1, x]] = Rook.new(color, self, [y1, x])
-            when 1
-                self[[y1, x]] = Knight.new(color, self, [y1, x])
-            when 2 
-                self[[y1, x]] = Bishop.new(color, self, [y1, x])
-            when 3 
-                self[[y1, x]] = King.new(color, self, [y1, x])
-            when 4
-                self[[y1, x]] = Queen.new(color, self, [y1, x])
-            when 5
-                self[[y1, x]] = Bishop.new(color, self, [y1, x])
-            when 6
-                self[[y1, x]] = Knight.new(color, self, [y1, x])
-            when 7 
-                self[[y1, x]] = Rook.new(color, self, [y1, x])
-            end
-        end
-    end 
-
     def [](pos)
         @rows[pos[0]][pos[1]]
     end
@@ -64,16 +38,16 @@ class Board
         (y).between?(0, 7) && x.between?(0, 7)
     end
 
-    def add_piece(piece, pos)
-    end
+    # def add_piece(piece, pos)
+    # end
 
     def checkmate?(color)
         if in_check?(color) 
             defenders = pieces.select { |piece| piece.color == color }
-            checkmate = defenders.none? { |defender| defender.valid_moves.length > 0  }
+            in_checkmate = defenders.none? { |defender| defender.valid_moves.length > 0  }
         end
 
-        checkmate
+        in_checkmate
     end
 
     def in_check?(color)
@@ -129,6 +103,31 @@ class Board
 
     private 
     @null_piece = Nullpiece.instance
+
+    def set_pieces(color)
+        color == "black" ? (y1, y2 = 0, 1) : (y1, y2 = 7, 6)
+        (0..7).each do |x|
+            self[[y2, x]] = Pawn.new(color, self, [y2, x])
+            case x 
+            when 0 
+                self[[y1, x]] = Rook.new(color, self, [y1, x])
+            when 1
+                self[[y1, x]] = Knight.new(color, self, [y1, x])
+            when 2 
+                self[[y1, x]] = Bishop.new(color, self, [y1, x])
+            when 3 
+                self[[y1, x]] = King.new(color, self, [y1, x])
+            when 4
+                self[[y1, x]] = Queen.new(color, self, [y1, x])
+            when 5
+                self[[y1, x]] = Bishop.new(color, self, [y1, x])
+            when 6
+                self[[y1, x]] = Knight.new(color, self, [y1, x])
+            when 7 
+                self[[y1, x]] = Rook.new(color, self, [y1, x])
+            end
+        end
+    end     
 
 
 end

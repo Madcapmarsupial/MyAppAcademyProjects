@@ -1,3 +1,5 @@
+require "byebug"
+
 class Piece
     attr_reader :pos, :color, :board
 
@@ -15,8 +17,6 @@ class Piece
         moves.reject { |move| move_into_check?(move) }
     end
 
-    
-
     def symbol
         :X
     end
@@ -32,6 +32,17 @@ class Piece
     def inspect 
         symbol
     end 
+
+    def has_captures?
+        return get_captures.length > 0
+    end
+
+    def get_captures
+        return [] if valid_moves.empty?        
+        valid_moves.select do |move|
+             @board[move].class != Nullpiece && @board[move].color != color
+        end
+    end
 
     private
     def move_into_check?(end_pos)
