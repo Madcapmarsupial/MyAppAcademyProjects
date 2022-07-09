@@ -9,24 +9,91 @@ class Hand
     end
 
     def royal_flush?
-        return sequential? && flush? && royals?
+        return sequential? && is_flush? && royals?
     end
 
     def straight_flush?
-        return sequential? && flush?
+        return sequential? && is_flush?
     end
 
 
     def four_kind?
-        @cards.each do |card|
-
+        @cards.any? do |card|
+            value_count(card.value) == 4
         end
     end
 
+    def full_house?
+        triplet = false
+        pair = false
+        @cards.each do |card| 
+            if value_count(card.value) == 3
+                triplet = true
+            elsif value_count(card.value) == 2
+                pair = true
+            end
+        end
+        return pair && triplet
+    end
+
+    def flush?
+        is_flush? && !sequential?
+    end
     
-    # it "should contain one single unique card" do 
-    #     expect(four_hand.count(kicker)).to eql(1)
-    # end
+    def straight?
+        sequential?
+    end
+
+    def three_kind?
+        triplet = @cards.any? do |card|
+            value_count(card.value) == 3
+        end
+
+        if triplet
+            kicker = @cards.any? do |card|
+                value_count(card.value) == 1
+            end
+        end
+
+        triplet && kicker
+    end
+
+    def two_kind?
+        pair_one = nil
+        pair_two = nil
+
+        @cards.each do |card|
+            if value_count(card.value) == 2 && pair_one == nil
+                pair_one = card.value
+            elsif value_count(card.value) == 2 && card.value != pair_one
+                pair_two = card.value
+            end
+        end
+        pair_one != nil && pair_two != nil
+    end
+
+    def pair?
+        kickers = @cards.inject(0) do |count, card| 
+            count += 1 if value_count(card.value) == 1
+            count
+        end
+        #if there are three kickers the remaining two cards in the hand must be a pair
+        kickers == 3
+    end
+
+    def high_card?
+        return false if is_flush? || sequential?
+
+        kickers = @cards.inject(0) do |count, card| 
+            count += 1 if value_count(card.value) == 1
+            count
+        end
+        kickers == 5
+    end
+
+
+
+
 
 
     private
@@ -47,7 +114,7 @@ class Hand
     end
 
     
-    def flush?
+    def is_flush?
         @cards.all? { |card| card.suit == @cards.first.suit }
     end
 
@@ -73,17 +140,11 @@ class Hand
         @cards.map(&:value)
     end
 
-    def count(target)
-        raise "bad search criteria" if !SUITS.include?(target) && !VALUES.include?(target)
-
-        if SUITS.include?(target)
-            search = Proc.new { |card| card.suit }
-        else 
-            search = Proc.new { |card| card.value }
-        end
+    def value_count(target)
+        raise "bad search criteria --> #{target}" if !VALUES.include?(target)
 
         @cards.inject(0) do |acc, card| 
-            if search.call(card) == target
+            if card.value == target
                 acc += 1 
             else
                 acc
@@ -91,6 +152,17 @@ class Hand
         end
     end
 
-   
+    def suit_count(target)
+        raise "bad search criteria" if !SUITS.include?(target)
+
+        @cards.inject(0) do |acc, card| 
+            if card.suit == target
+                acc += 1 
+            else
+                acc
+            end
+        end
+    end
+
 
 end
