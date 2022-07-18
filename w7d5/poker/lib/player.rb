@@ -14,13 +14,7 @@ class Player
         @folded = false
     end
         
-    def bet(total_bet)
-        amount = total_bet - @current_bet
-        raise "not enough funds" unless amount <= @bankroll
-        @current_bet = total_bet
-        @bankroll -= amount
-        amount
-    end
+    
 
 
     def fold
@@ -57,10 +51,19 @@ class Player
     end
 
     def get_bet
-        print "Current funds available to bet: $#{bankroll} > "
+        print "Current funds available to bet: $#{bankroll} "
         bet = gets.chomp.to_i
         raise "bet is too big" unless bet <= bankroll
+
         bet
+    end
+
+    def bet(total_bet)
+        amount = total_bet - @current_bet
+        raise "not enough funds" unless amount <= @bankroll
+        @current_bet = total_bet
+        @bankroll -= amount
+        amount
     end
 
     def add_winnings(amount)
@@ -74,8 +77,17 @@ class Player
     end
    
     def <=>(other_player)
-        hand.against(other_player.hand)
+        winner = hand.against(other_player.hand)
+        winner == hand ? self : other_player
     end
+
+    def get_cards_to_trade
+        print "Cards to trade? (ex. '1, 4, 5') > "
+        card_indices = gets.chomp.split(', ').map(&:to_i)
+        raise 'cannot trade more than three cards' unless card_indices.count <= 3
+        puts
+        card_indices.map { |i| hand.cards[i - 1] }
+      end
 
     def trade_cards(old_cards, new_cards)
         @hand.replace_cards(old_cards, new_cards)

@@ -32,4 +32,8 @@ class Hand
       @cards.count
     end
 
+    def to_s
+      cards.join(' ')
+    end
+
 end
