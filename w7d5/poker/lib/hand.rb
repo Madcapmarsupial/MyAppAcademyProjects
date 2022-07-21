@@ -16,7 +16,7 @@ class Hand
     end
 
     def card_sort!
-      @cards.sort! { |card_a, card_b|  self.card_rank(card_a) <=> self.card_rank(card_b)} 
+      @cards.sort! { |card_a, card_b| self.card_rank(card_b) <=>  self.card_rank(card_a)} 
       @cards
     end
 

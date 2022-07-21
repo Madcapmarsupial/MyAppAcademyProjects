@@ -5,89 +5,89 @@ describe Hand do
     #test cards
   
     let(:royal_flush_cards) do
-        [ double("card", :suit => "spades", :value => "Ace"),
-          double("card", :suit => "spades", :value => "King"),
-          double("card", :suit => "spades", :value => "Queen"),
-          double("card", :suit => "spades", :value => "Jack"),
-          double("card", :suit => "spades", :value => "10") ]
+        [ double("card", :suit => "♠", :value => "A"),
+          double("card", :suit => "♠", :value => "K"),
+          double("card", :suit => "♠", :value => "Q"),
+          double("card", :suit => "♠", :value => "J"),
+          double("card", :suit => "♠", :value => "10") ]
     end
     let(:straight_flush_cards) do
-        [ double("card", :suit => "spades", :value => "King"),
-          double("card", :suit => "spades", :value => "Queen"),
-          double("card", :suit => "spades", :value => "Jack"),
-          double("card", :suit => "spades", :value => "10"),
-          double("card", :suit => "spades", :value => "9") ]
+        [ double("card", :suit => "♠", :value => "K"),
+          double("card", :suit => "♠", :value => "Q"),
+          double("card", :suit => "♠", :value => "J"),
+          double("card", :suit => "♠", :value => "10"),
+          double("card", :suit => "♠", :value => "9") ]
     end
     let(:high_straight_cards) do
-        [ double("card", :suit => "spades", :value => "Ace"), 
-          double("card", :suit => "clubs", :value => "King"),
-          double("card", :suit => "spades", :value => "Queen"),
-          double("card", :suit => "spades", :value => "Jack"),
-          double("card", :suit => "spades", :value => "10") ]
+        [ double("card", :suit => "♠", :value => "A"), 
+          double("card", :suit => "♣", :value => "K"),
+          double("card", :suit => "♠", :value => "Q"),
+          double("card", :suit => "♠", :value => "J"),
+          double("card", :suit => "♠", :value => "10") ]
     end
     let(:straight_cards) do
-        [ double("card", :suit => "clubs", :value => "King"),
-          double("card", :suit => "spades", :value => "Queen"),
-          double("card", :suit => "spades", :value => "Jack"),
-          double("card", :suit => "spades", :value => "10"),
-          double("card", :suit => "spades", :value => "9") ]
+        [ double("card", :suit => "♣", :value => "K"),
+          double("card", :suit => "♠", :value => "Q"),
+          double("card", :suit => "♠", :value => "J"),
+          double("card", :suit => "♠", :value => "10"),
+          double("card", :suit => "♠", :value => "9") ]
     end
     let(:low_straight_cards) do
-        [ double("card", :suit => "clubs", :value => "Queen"),
-          double("card", :suit => "spades", :value => "Jack"),
-          double("card", :suit => "hearts", :value => "10"),
-          double("card", :suit => "spades", :value => "9"),
-          double("card", :suit => "spades", :value => "8") ]
+        [ double("card", :suit => "♣", :value => "Q"),
+          double("card", :suit => "♠", :value => "J"),
+          double("card", :suit => "♥", :value => "10"),
+          double("card", :suit => "♠", :value => "9"),
+          double("card", :suit => "♠", :value => "8") ]
     end
-    let(:kicker) { double("card", :suit => "clubs", :value => "5") }
+    let(:kicker) { double("card", :suit => "♣", :value => "5") }
     let(:four_of_a_kind_cards) do
         [ kicker,
-          double("card", :suit => "spades", :value => "9"),
-          double("card", :suit => "clubs", :value => "9"),
-          double("card", :suit => "hearts", :value => "9"),
-          double("card", :suit => "diamonds", :value => "9") ]
+          double("card", :suit => "♠", :value => "9"),
+          double("card", :suit => "♣", :value => "9"),
+          double("card", :suit => "♥", :value => "9"),
+          double("card", :suit => "♦", :value => "9") ]
     end
     let(:three_of_a_kind_cards) do
-        [ double("card", :suit => "clubs", :value => "5"),
-          double("card", :suit => "spades", :value => "9"),
-          double("card", :suit => "clubs", :value => "7"),
-          double("card", :suit => "hearts", :value => "7"),
-          double("card", :suit => "diamonds", :value => "7") ]
+        [ double("card", :suit => "♣", :value => "5"),
+          double("card", :suit => "♠", :value => "9"),
+          double("card", :suit => "♣", :value => "7"),
+          double("card", :suit => "♥", :value => "7"),
+          double("card", :suit => "♦", :value => "7") ]
     end
     let(:full_cards) do
-        [ double("card", :suit => "clubs", :value => "5"),
-          double("card", :suit => "spades", :value => "5"),
-          double("card", :suit => "hearts", :value => "5"),
-          double("card", :suit => "hearts", :value => "King"),
-          double("card", :suit => "diamonds", :value => "King") ]
+        [ double("card", :suit => "♣", :value => "5"),
+          double("card", :suit => "♠", :value => "5"),
+          double("card", :suit => "♥", :value => "5"),
+          double("card", :suit => "♥", :value => "K"),
+          double("card", :suit => "♦", :value => "K") ]
     end
     let(:flush_cards) do
-        [ double("card", :suit => "spades", :value => "King"),
-          double("card", :suit => "spades", :value => "3"),
-          double("card", :suit => "spades", :value => "5"),
-          double("card", :suit => "spades", :value => "10"),
-          double("card", :suit => "spades", :value => "9") ]
+        [ double("card", :suit => "♠", :value => "K"),
+          double("card", :suit => "♠", :value => "3"),
+          double("card", :suit => "♠", :value => "5"),
+          double("card", :suit => "♠", :value => "10"),
+          double("card", :suit => "♠", :value => "9") ]
     end
     let(:two_pair_kind_cards) do
-        [ double("card", :suit => "clubs", :value => "5"),
-          double("card", :suit => "spades", :value => "9"),
-          double("card", :suit => "clubs", :value => "9"),
-          double("card", :suit => "hearts", :value => "8"),
-          double("card", :suit => "diamonds", :value => "8") ]
+        [ double("card", :suit => "♣", :value => "5"),
+          double("card", :suit => "♠", :value => "9"),
+          double("card", :suit => "♣", :value => "9"),
+          double("card", :suit => "♥", :value => "8"),
+          double("card", :suit => "♦", :value => "8") ]
     end
     let(:pair_cards) do
-        [ double("card", :suit => "clubs", :value => "5"),
-          double("card", :suit => "spades", :value => "9"),
-          double("card", :suit => "clubs", :value => "7"),
-          double("card", :suit => "hearts", :value => "10"),
-          double("card", :suit => "diamonds", :value => "10") ]
+        [ double("card", :suit => "♣", :value => "5"),
+          double("card", :suit => "♠", :value => "9"),
+          double("card", :suit => "♣", :value => "7"),
+          double("card", :suit => "♥", :value => "10"),
+          double("card", :suit => "♦", :value => "10") ]
     end
     let(:mixed_kind_cards) do
-        [ double("card", :suit => "clubs", :value => "5"),
-          double("card", :suit => "spades", :value => "9"),
-          double("card", :suit => "clubs", :value => "7"),
-          double("card", :suit => "hearts", :value => "10"),
-          double("card", :suit => "diamonds", :value => "2") ]
+        [ double("card", :suit => "♣", :value => "5"),
+          double("card", :suit => "♠", :value => "9"),
+          double("card", :suit => "♣", :value => "7"),
+          double("card", :suit => "♥", :value => "10"),
+          double("card", :suit => "♦", :value => "2") ]
     end
 
     # test  hands
@@ -255,19 +255,19 @@ describe Hand do
      describe "#rank_cards" do 
         
         let(:losing_set) do
-            [ double("card", :suit => "spades", :value => "Jack"),
-              double("card", :suit => "spades", :value => "8"),
-              double("card", :suit => "spades", :value => "6"),
-              double("card", :suit => "spades", :value => "4"),
-              double("card", :suit => "spades", :value => "2") ]
+            [ double("card", :suit => "♠", :value => "J"),
+              double("card", :suit => "♠", :value => "8"),
+              double("card", :suit => "♠", :value => "6"),
+              double("card", :suit => "♠", :value => "4"),
+              double("card", :suit => "♠", :value => "2") ]
         end
         let(:winning_set) do
             [
-              double("card", :suit => "hearts", :value => "8"),
-              double("card", :suit => "hearts", :value => "6"),
-              double("card", :suit => "hearts", :value => "4"),
-               double("card", :suit => "hearts", :value => "Jack"),
-              double("card", :suit => "hearts", :value => "3") ]
+              double("card", :suit => "♥", :value => "8"),
+              double("card", :suit => "♥", :value => "6"),
+              double("card", :suit => "♥", :value => "4"),
+               double("card", :suit => "♥", :value => "J"),
+              double("card", :suit => "♥", :value => "3") ]
         end
         
         let(:winner) { Hand.new(winning_set)}
@@ -292,29 +292,29 @@ describe Hand do
 
     describe "#replace_cards" do
         let(:left_over) do 
-            [ double("card", :suit => "spades", :value => "9"),
-                double("card", :suit => "clubs", :value => "7") ]
+            [ double("card", :suit => "♠", :value => "9"),
+                double("card", :suit => "♣", :value => "7") ]
         end
 
         let(:old_cards) do 
-            [ double("card", :suit => "clubs", :value => "5"),
-                double("card", :suit => "hearts", :value => "10"),
-                double("card", :suit => "diamonds", :value => "2") ]
+            [ double("card", :suit => "♣", :value => "5"),
+                double("card", :suit => "♥", :value => "10"),
+                double("card", :suit => "♦", :value => "2") ]
         end
 
         subject(:hand) { Hand.new(left_over + old_cards) }
 
-        # [ double("card", :suit => "clubs", :value => "5"),
-        #     double("card", :suit => "spades", :value => "9"),
-        #     double("card", :suit => "clubs", :value => "7"),
-        #     double("card", :suit => "hearts", :value => "10"),
-        #     double("card", :suit => "diamonds", :value => "2") ]
+        # [ double("card", :suit => "♣", :value => "5"),
+        #     double("card", :suit => "♠", :value => "9"),
+        #     double("card", :suit => "♣", :value => "7"),
+        #     double("card", :suit => "♥", :value => "10"),
+        #     double("card", :suit => "♦", :value => "2") ]
 
         
         let(:new_cards) do 
-            [ double("card", :suit => "hearts", :value => "5"),
-                double("card", :suit => "diamonds", :value => "10"),
-                double("card", :suit => "diamonds", :value => "3") ]
+            [ double("card", :suit => "♥", :value => "5"),
+                double("card", :suit => "♦", :value => "10"),
+                double("card", :suit => "♦", :value => "3") ]
         end
 
         # before(:each) do 
@@ -336,8 +336,8 @@ describe Hand do
             end
         end
 
-        let(:card) {  [double("card", :suit => "diamonds", :value => "Jack")] }
-        let(:unknown) { [double("card", :suit => "diamonds", :value => "King")] }
+        let(:card) {  [double("card", :suit => "♦", :value => "J")] }
+        let(:unknown) { [double("card", :suit => "♦", :value => "K")] }
 
         it "raises an error if an unowned card is discarded" do
             expect { hand.replace_cards(unknown, card) }.to raise_error("you don't hold that card")
@@ -351,21 +351,21 @@ describe Hand do
     # describe "#card_sort!" do
     #     let(:unsorted_set) do
     #         [
-    #           double("card", :suit => "hearts", :value => "8"),
-    #           double("card", :suit => "hearts", :value => "6"),
-    #           double("card", :suit => "hearts", :value => "4"),
-    #            double("card", :suit => "hearts", :value => "Jack"),
-    #           double("card", :suit => "hearts", :value => "3") ]
+    #           double("card", :suit => "♥", :value => "8"),
+    #           double("card", :suit => "♥", :value => "6"),
+    #           double("card", :suit => "♥", :value => "4"),
+    #            double("card", :suit => "♥", :value => "J"),
+    #           double("card", :suit => "♥", :value => "3") ]
     #     end
 
     #     subject(:hand) {Hand.new(unsorted_set)}
        
     #     let(:sorted_set) do
-    #         [double("card", :suit => "hearts", :value => "Jack"),
-    #           double("card", :suit => "hearts", :value => "8"),
-    #           double("card", :suit => "hearts", :value => "6"),
-    #           double("card", :suit => "hearts", :value => "4"),
-    #           double("card", :suit => "hearts", :value => "3") ]
+    #         [double("card", :suit => "♥", :value => "J"),
+    #           double("card", :suit => "♥", :value => "8"),
+    #           double("card", :suit => "♥", :value => "6"),
+    #           double("card", :suit => "♥", :value => "4"),
+    #           double("card", :suit => "♥", :value => "3") ]
     #     end
     #     it "should sort cards by highest rank" do 
     #         expect(hand.card_sort!).to eq(sorted_set)

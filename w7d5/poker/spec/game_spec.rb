@@ -74,29 +74,6 @@ describe Game do
         end
     end
 
-    describe "#current_player" do
-        it "should return the player whose turn it is" do 
-            game.add_players(3, 1000)
-            expect(game.current_player).to be(game.players[0])
-            expect(game.current_player).to_not be(game.players[1])
-        end
-    end
- 
-    describe "next_turn" do 
-        it "should switch current_player to the next player" do 
-            game.add_players(3, 1000)
-            p1 = game.players[0]
-            p2 = game.players[1]
-            p3 = game.players[2]
-
-            game.next_turn
-            expect(game.current_player).to be(p2)
-            game.next_turn
-            expect(game.current_player).to be(p3)
-            game.next_turn
-            expect(game.current_player).to be(p1)
-        end
-    end
 
     describe "#game_over?" do 
         it "should return false when players still have money" do 

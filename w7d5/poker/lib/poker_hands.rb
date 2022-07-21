@@ -1,7 +1,7 @@
 module PokerHands
 
-    VALUES = %w[ 2 3 4 5 6 7 8 9 10 Jack Queen King Ace]
-    SUITS = %w[ hearts diamonds clubs spades]
+    VALUES = %w[ 2 3 4 5 6 7 8 9 10 J Q K A]
+    SUITS = %w[ ♥ ♦ ♣ ♠ ]
     ROYALS = VALUES.slice(9..-1)
     RANKS = { 
         :straight_flush => 900, 
@@ -14,6 +14,7 @@ module PokerHands
         :pair => 200, 
         :high_card => 100
     }
+
 
     def royal_flush?
         return sequential? && is_flush? && royals?
@@ -137,13 +138,13 @@ module PokerHands
 
     def card_rank(card)
         case card.value 
-        when "Jack"
+        when "J"
             return 11
-        when "Queen"
+        when "Q"
             return 12
-        when "King"
+        when "K"
             return 13
-        when "Ace"
+        when "A"
             return 14
         else 
             return card.value.to_i
@@ -159,6 +160,7 @@ module PokerHands
     end
 
     def sequential?
+        self.card_sort!
         hand = self.cards.dup
         until hand.one?
             draw_card = hand.shift

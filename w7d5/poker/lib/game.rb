@@ -1,5 +1,8 @@
 require_relative 'deck.rb'
 require_relative 'player.rb'
+require 'colorize'
+require 'byebug'
+
 
 class Game
     attr_reader :deck, :pot, :players
@@ -17,8 +20,7 @@ class Game
     end
 
     def add_to_pot(amount)
-        @pot += amount
-        amount
+        (@pot += amount) && amount
     end
     
     def add_players(player_count, bankroll)
@@ -26,17 +28,8 @@ class Game
     end
 
     def deal
-        @players.each do |player| 
-            hand = deck.deal_hand
-            if player.bankroll > 0
-                player.deal_in(hand) 
-            end
-        end
+        @players.each { |player| player.deal_in(deck.deal_hand) if player.bankroll > 0 }
     end
-
-    def current_player
-        @players.first
-    end    
 
     def next_turn
         first = @players.shift
@@ -47,78 +40,124 @@ class Game
         return players.one? { |player| player.bankroll > 0 }
     end
 
-    def bet_phase(stake)
-        players.count.times do |i|
-            begin
-                p 
-                p current_player.bankroll
-                p current_player.hand.to_s
-                action = current_player.make_bet
-              
-                case action 
-                when :fold
-                    current_player.fold
-                    players.shift
-                when :see
-                    current_player.bet(stake)
-                    add_to_pot(stake)
-                    next_turn
-                when :raise
-                    p "enter the new total stake"
-                    total = current_player.get_bet
-                    raise "amount must be larger then the stake #{stake}" unless total > stake
-                    stake += current_player.bet(total)
-                    add_to_pot(stake)
-                    next_turn
+    def round_over?
+        return players.count { |player| !player.folded? } <= 1
+    end
+
+    def reset_players
+        players.each(&:unfold)
+    end
+
+    def render(index, highest_bet)
+        puts
+        puts "Pot: $#{@pot}"
+        puts "High bet: $#{highest_bet}"
+    
+        players.each_with_index do |player, i|
+          puts "Player #{i + 1} has #{player.bankroll}"
+        end
+    
+        puts
+        puts "Current player: #{index + 1}"
+        puts "Player #{index + 1} has bet: $#{players[index].current_bet}"
+        puts "The bet is at $#{highest_bet}"
+        puts "Player #{index + 1}'s hand: #{players[index].hand}"
+    end
+
+    def get_bets
+        players.each(&:reset_current_bet)
+        highest_bet = 0
+        no_raises = false
+        last_better = nil
+
+        until no_raises 
+            no_raises = true
+            players.each_with_index do |player, i|
+                next if player.folded?
+                break if player == last_better || round_over?
+
+                render(i, highest_bet)
+
+                begin
+                    action = player.make_bet
+                    case action 
+                    when :see 
+                        add_to_pot(player.bet(highest_bet))
+                    when :raise 
+                        raise "not enough money" unless player.bankroll >= highest_bet
+                        no_raises = false
+                        last_better = player
+                        p "enter the new high bet"
+                        total_bet = player.get_bet
+                        raise "amount must be larger then $#{highest_bet}" unless total_bet > highest_bet
+                        raise_amount = player.bet(total_bet)
+                        highest_bet = total_bet
+                        add_to_pot(raise_amount)
+                    when :fold 
+                        player.fold
+                    end
+                rescue => error
+                    p "#{error.message}"
+                    retry   
                 end
-            rescue
-                p "try again"
-                 retry   
+
             end
         end
-        stake
     end
 
     def draw_phase
-        players.count do |i|
-            discards = current_player.get_cards_to_trade
+        players.each_with_index do |player, i|
+            next if player.folded?
+            print "Player #{i + 1} which cards would you like to trade: "
+            puts player.hand
+            discards = player.get_cards_to_trade
             deck.return(discards)
-            current_player.trade_cards(discards, deck.take(discards.count))
-            next_turn
+            player.trade_cards(discards, deck.take(discards.count))
+            print "New hand"
+            puts player.hand
+            sleep(3)
         end
     end
 
+    def play_round
+        deck.shuffle
+        reset_players
+        deal
+        get_bets
+        draw_phase
+        get_bets
+        round_end
+    end
 
-    def showdown
-        winner = players.inject(current_player) do |acc, player|
+    def show_hands
+        players.each_with_index do |player, i|
+            puts "Player #{i + 1}'s hand is a #{players[i].hand.rank}: #{players[i].hand}"
+        end
+    end
+
+    def round_end
+        show_hands
+        winner = get_winner
+        puts
+        puts "WINNER"
+        puts "#{winner.hand} wins $#{pot} with a #{winner.hand.rank}"
+        winner.add_winnings(pot)
+        @pot = 0
+        players.each(&:return_cards)
+    end
+
+
+    def get_winner
+        winner = players.inject(players.first) do |acc, player|
             acc = ( acc <=> player )
         end
         winner
     end
-
-    def play(buy_in_amount)
-        #deal
-        #bet
-        deal
-        stake = bet_phase(buy_in_amount)
-        return get_winner(current_player) if game_over?
-        draw_phase
-        bet_phase(stake)
-        return get_winner(current_player) if game_over?
-        get_winner(showdown)
-        
-    end
-
-
-    def get_winner(player)
-        p "#{player} wins!"
-    end
-
 end
 
 
 if __FILE__ == $PROGRAM_NAME
     g = Game.new
     g.add_players(3, 100)
-    g.play(10)
+    g.play_round
 end

@@ -1,4 +1,4 @@
-
+require 'colorize'
 
 class Card
     attr_reader :suit, :value
@@ -8,6 +8,15 @@ class Card
     end
 
     def to_s
-        "#{value} of #{suit}"
+
+        case suit
+        when "♥" then color = :red
+        when "♦" then color = :red
+        else color = :black
+        end
+
+
+
+        "#{value}#{suit} |".colorize(:color => color, :background => :white)
     end
 end

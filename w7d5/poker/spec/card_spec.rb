@@ -19,7 +19,7 @@ describe Card do
 
     describe '#to_s' do 
         it 'returns the the string of suit and value' do
-            expect(card.to_s).to eq("5 of hearts")
+            expect(card.to_s).to include("5hearts")
         end
     end
 end

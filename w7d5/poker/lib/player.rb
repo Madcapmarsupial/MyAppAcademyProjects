@@ -87,7 +87,7 @@ class Player
         raise 'cannot trade more than three cards' unless card_indices.count <= 3
         puts
         card_indices.map { |i| hand.cards[i - 1] }
-      end
+    end
 
     def trade_cards(old_cards, new_cards)
         @hand.replace_cards(old_cards, new_cards)
