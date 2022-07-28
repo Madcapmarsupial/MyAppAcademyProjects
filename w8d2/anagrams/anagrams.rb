@@ -35,4 +35,6 @@ def fourth_anagram?(str1, str2)
 
     hash_1.each_pair { |k, v| return false if v.odd? }
     true
+    
+    
 end
