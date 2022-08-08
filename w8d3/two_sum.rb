@@ -1,6 +1,5 @@
 # O(n^2) quadractic time
 # O(1) constant space
-require "byebug"
 def brute_two_sum?(arr, target_sum)
     (0...arr.length).each do |i| 
         (i+1...arr.length-1).each do |j|
@@ -10,8 +9,7 @@ def brute_two_sum?(arr, target_sum)
     return false
 end
 
-arr = [0, 1, 5, 7]
- brute_two_sum?(arr, 6) # => should be true
+brute_two_sum?(arr, 6) # => should be true
 brute_two_sum?(arr, 10) # => should be false
 
 
@@ -54,6 +52,8 @@ def binary(num, arr)
     end
 end
 
+#O(n log n)  log linear due to the sorting
+# binary is O(log n) logarithmic
 def okay_two_sum?(arr, target_sum)
    arr.each_with_index do |ele, i| 
         target_diff = (target_sum - ele)
@@ -65,10 +65,8 @@ def okay_two_sum?(arr, target_sum)
    false
 end
 
-
-    #O(n) linear time complexity 
-    #(n) space complexity
-
+#O(n) linear time complexity 
+#O(n) space complexity
 def two_sum?(arr, target)
     hash_map = Hash.new
     arr.each do |num|
