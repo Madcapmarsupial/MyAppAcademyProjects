@@ -37,12 +37,10 @@ class HashMap
   include Enumerable
 
   def each
-    i = 0
-    while i < @store.length - 1
-      bucket(i).each do |node|
+    @store.each do |bucket|
+      bucket.each do |node|
         yield [node.key, node.val]
       end
-      i += 1
     end
   end
 
