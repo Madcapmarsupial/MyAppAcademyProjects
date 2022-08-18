@@ -96,7 +96,6 @@ class LinkedList
         yield node
         node = node.next
       end
-      node
     end
   end
 

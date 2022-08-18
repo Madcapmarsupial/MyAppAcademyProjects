@@ -45,5 +45,15 @@ class HashSet
   end
 
   def resize!
+     @store += Array.new(num_buckets) {Array.new}
+    clone = Array.new(num_buckets) {Array.new}
+    
+    @store.each do |bucket|
+      bucket.each do |num|
+        clone[num.hash % num_buckets] << num
+      end
+    end
+
+    @store = clone
   end
 end
