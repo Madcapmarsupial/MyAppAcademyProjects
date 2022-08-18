@@ -20,6 +20,9 @@ class Node
     # and removes self from list.
     @next.prev = self.prev
     @prev.next = self.next 
+    self.next = nil
+    self.prev = nil
+    self
   end
 end
 
@@ -39,11 +42,11 @@ class LinkedList
   end
 
   def first
-    @head.next
+    empty? ? nil : @head.next
   end
 
   def last
-    @tail.prev
+    empty? ? nil : @tail.prev
   end
 
   def empty?
@@ -51,9 +54,7 @@ class LinkedList
   end
 
   def get(key)
-    self.each do |node| 
-      return node.val if node.key == key
-    end
+    self.each { |node| return node.val if node.key == key }
     nil
   end
 
@@ -67,6 +68,7 @@ class LinkedList
     (@tail.prev).next = node
     @tail.prev = node
     node.next = @tail
+    node
   end
 
   def update(key, val)
@@ -86,7 +88,7 @@ class LinkedList
         return node
       end
     end
-    nil
+    false
   end
   # list.each do |node|  end
   def each

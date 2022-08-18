@@ -30,8 +30,11 @@ class HashMap
   end
 
   def delete(key)
-    bucket(key).remove(key)
-    @count -= 1
+    if include?(key)
+      bucket(key).remove(key) 
+      @count -= 1
+    end
+    nil
   end
 
   include Enumerable
