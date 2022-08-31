@@ -35,6 +35,19 @@ end
 def larger_than_russia
   # List each country name where the population is larger than 'Russia'.
   execute(<<-SQL)
+    SELECT
+      name
+    FROM
+      countries
+    WHERE
+      population > (
+        SELECT
+         population
+        FROM
+          countries
+        WHERE
+          name = 'Russia'
+      )
   SQL
 end
 
@@ -42,6 +55,21 @@ def richer_than_england
   # Show the countries in Europe with a per capita GDP greater than
   # 'United Kingdom'.
   execute(<<-SQL)
+  SELECT
+    name
+  FROM 
+    countries
+  WHERE
+    continent = 'Europe'
+  AND
+    (gdp / population) > (
+      SELECT
+          (gdp / population)
+      FROM
+        countries
+      WHERE
+        name = 'United Kingdom'
+    )
   SQL
 end
 
@@ -49,6 +77,13 @@ def neighbors_of_certain_b_countries
   # List the name and continent of countries in the continents containing
   # 'Belize', 'Belgium'.
   execute(<<-SQL)
+    SELECT
+      name, continent 
+    FROM
+      countries
+    WHERE
+      continent = 'Americas' OR continent = 'Europe'
+      
   SQL
 end
 
@@ -56,14 +91,68 @@ def population_constraint
   # Which country has a population that is more than Canada but less than
   # Poland? Show the name and the population.
   execute(<<-SQL)
+  SELECT
+    name, population
+  FROM 
+    countries
+  WHERE
+    population > (
+      SELECT
+        population
+      FROM 
+        countries
+      WHERE
+        name = 'Canada'
+    )
+  AND
+    population < (
+      SELECT
+        population
+      FROM 
+        countries
+      WHERE
+        name = 'Poland'
+    )
+
   SQL
 end
 
 def sparse_continents
-  # Find every country that belongs to a continent where each country's
+  #find the continent in which all countries population are below the target
+
+
+  # Find every country 
+    # Show name, continent and  population.
+
+  # in a continent 
+    #where every country's population is less than 25,000,000. 
+
+  # 
+
+  #  find low poplation and then continent
+
+
+  # Hint: Sometimes rewording the problem can help you see the solution.
+
+   # Find every country that belongs to a continent where each country's
   # population is less than 25,000,000. Show name, continent and
   # population.
   # Hint: Sometimes rewording the problem can help you see the solution.
+
+
   execute(<<-SQL)
+    SELECT 
+      a.name, a.continent, a.population
+    FROM
+      countries AS a
+    WHERE
+      25000000 > ALL (
+        SELECT 
+          population
+        FROM 
+          countries
+        WHERE
+          continent = a.continent
+      )
   SQL
 end
