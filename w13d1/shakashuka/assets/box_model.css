@@ -4,10 +4,27 @@ body {
   /* If the user cannot load the Arial font, the sans-serif font is used */
   font-family: Arial, sans-serif;
   background-color: #FEFFF1;
+  width: 900px;
+  margin: 0 auto;
+}
+
+body > section {
+  width: 700px;
+  display: block;
+  float: left;
+}
+
+body > aside {
+  width: 180px;
+  display: block;
+  float: left;
+  margin-right: 15px;
+
 }
 
 h1 {
   font-size: 38px;
+  margin-bottom: 10px;
 }
 
 h2 {
@@ -19,6 +36,22 @@ are children of an Unordered Lsit element */
 ul li a, figcaption a {
   text-decoration: none;
   color: inherit;
+}
+
+nav {
+  display: inline-block;
+  float: right;
+}
+
+nav > ul > li {
+  display: inline-block;
+}
+
+a {
+  display: block;
+  padding: 20px 20px 0px 20px;
+  position: relative;
+  bottom: 10px;
 }
 
 /* This selector selects only IMMEDIATE (1 level deep) image element children
@@ -34,8 +67,19 @@ header > img {
   list-style: square inside;
 }
 
+.ingredients-list > li {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+
 ol {
   list-style: upper-roman inside;
+}
+
+ol > li {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .user_review h4 {
@@ -49,15 +93,21 @@ input[type="radio"] {
     height: 27px;
     background-image: url(../assets/stars.png);
     vertical-align: bottom;
+    display: inline-block;
+    margin-top: 0px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 input[type="radio"]:checked {
   background-position: 30px 30px;
+  display: inline-block;
 }
 
 
 input:last-child {
     background: gold;
+    display: block;
 }
 
 input:last-child:hover {
@@ -72,3 +122,39 @@ h2 + .user_review {
     border-top: 1px solid black;
 }
 
+select {
+  width: 300px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+textarea {
+  width: 300px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+input[type="text"] {
+ width: 200px;
+ display: block;
+ margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+label {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+p {
+  margin: 0;
+  display: block;
+}
+
+
+
+section#reviews {
+  float: right;
+}
