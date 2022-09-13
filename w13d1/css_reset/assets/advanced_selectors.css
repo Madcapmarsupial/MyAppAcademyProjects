@@ -25,6 +25,7 @@ ul li a, figcaption a {
 of the header element */
 header > img {
   width: 100px;
+  float: left;
 }
 
 /* Selects all elements with the class attribute "ingredients-list" */
@@ -71,3 +72,17 @@ ol li:nth-of-type(2n) {
 h2 + .user_review {
     border-top: 1px solid black;
 }
+
+
+
+
+nav {
+  float: right;
+}
+
+.cf::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+

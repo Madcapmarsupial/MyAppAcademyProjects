@@ -1,0 +1,162 @@
+/* Introduction to Cascading Style Sheets */
+
+body {
+  /* If the user cannot load the Arial font, the sans-serif font is used */
+  font-family: Arial, sans-serif;
+  background-color: #FEFFF1;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 38px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+/* This selector selects ALL anchor tag children of ALL list elements that
+are children of an Unordered Lsit element */
+ul li a,
+figcaption a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* This selector selects only IMMEDIATE (1 level deep) image element children
+of the header element */
+header>img {
+  width: 100px;
+}
+
+/* Selects all elements with the class attribute "ingredients-list" */
+.ingredients-list {
+
+  /* The list style property is shorthand for multiple list-style properties*/
+  list-style: square inside;
+}
+
+ol {
+  list-style: upper-roman inside;
+}
+
+.user_review h4 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  width: 27px;
+  height: 27px;
+  background-image: url(./stars.png);
+  vertical-align: bottom;
+}
+
+input[type="radio"]:checked {
+  background-position: 30px 30px;
+}
+
+
+input:last-child {
+  background: gold;
+}
+
+input:last-child:hover {
+  -webkit-filter: brightness(90%);
+}
+
+ol li:nth-of-type(2n) {
+  background-color: whitesmoke;
+}
+
+h2+.user_review {
+  border-top: 1px solid black;
+}
+
+.cf::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+nav ul {
+  display: flex;
+  margin-right: 10px;
+  list-style: square inside;
+}
+
+nav ul > li {
+  margin-right: 15px;
+}
+ 
+footer {
+  display: block;
+  float: left;
+}
+
+
+
+aside > ul {
+  padding: 15px;
+}
+
+section#reviews {
+  display: block;
+  float: none;
+}
+
+section#reviews > h2 {
+  margin: 15px;
+}
+
+textarea {
+  display: block;
+  padding: 15px;
+}
+
+input {
+  display: inline-block;
+}
+input#name {
+  display: inline-block;
+}
+
+select {
+  display: block;
+}
+
+form#review-form {
+  margin: 15px;
+}
+
+select#expertise {
+    margin: 15px 15px 15px 0px;
+}
+
+
+
+ /* grid */
+.col {
+  float: left;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+
+.col:last-of-type {
+  padding: 0;
+}
+
+.col-1-3 {
+  width: 33.33%;
+}
+ 
+.col-2-3 {
+  width: 66.66%;
+
+}
