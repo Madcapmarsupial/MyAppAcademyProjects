@@ -9,12 +9,12 @@ class Reply
   attr_accessor :id, :body, :user_id, :question_id, :parent_id
 
   def self.all
-    data = QuestionDBConnection.instance.execute("SELECT * FROM replies")
+    data = QuestionsDatabase.instance.execute("SELECT * FROM replies")
     data.map { |datum| Reply.new(datum)}
   end
 
   def self.find_by_id(id)
-    data = QuestionDBConnection.instance.execute(<<-SQL, id)
+    data = QuestionsDatabase.instance.execute(<<-SQL, id)
       SELECT *
       FROM replies
       WHERE id = ?
@@ -24,7 +24,7 @@ class Reply
   end
 
   def self.find_by_user_id(user_id)
-    data = QuestionDBConnection.instance.execute(<<-SQL, user_id)
+    data = QuestionsDatabase.instance.execute(<<-SQL, user_id)
       SELECT *
       FROM replies
       WHERE user_id = ?
@@ -34,7 +34,7 @@ class Reply
   end
 
   def self.find_by_question_id(question_id)
-    data = QuestionDBConnection.instance.execute(<<-SQL, question_id)
+    data = QuestionsDatabase.instance.execute(<<-SQL, question_id)
       SELECT *
       FROM replies
       WHERE question_id = ?
@@ -64,7 +64,7 @@ class Reply
   end
 
   def child_replies
-    data = QuestionDBConnection.instance.execute(<<-SQL, id)
+    data = QuestionsDatabase.instance.execute(<<-SQL, id)
       SELECT *
       FROM replies
       WHERE parent_id = ?

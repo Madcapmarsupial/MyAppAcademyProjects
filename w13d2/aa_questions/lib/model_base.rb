@@ -1,16 +1,13 @@
 require_relative 'questions_database.rb'
 require 'active_support/inflector'
 
-
 class ModelBase
-  #attr_accessor *self.instance_variables
-
   def self.table
     self.to_s.tableize
   end
 
   def self.find_by_id(id)
-    data = QuestionDBConnection.instance.execute(<<-SQL, id)
+    data = QuestionsDatabase.instance.execute(<<-SQL, id)
       SELECT *
       FROM  #{table}
       WHERE id = ?
@@ -20,7 +17,7 @@ class ModelBase
   end
 
   def self.all
-    data = QuestionDBConnection.instance.execute("SELECT * FROM #{table}")
+    data = QuestionsDatabase.instance.execute("SELECT * FROM #{table}")
     parse(data)
   end
 
@@ -38,14 +35,14 @@ class ModelBase
     cols = instance_attrs.keys.join(", ")
     q_marks = Array.new(instance_attrs.count) {"?"}.join(", ")
 
-    QuestionDBConnection.instance.execute(<<-SQL, *vals)
+    QuestionsDatabase.instance.execute(<<-SQL, *vals)
       INSERT INTO
         #{self.class.table} (#{cols})
       VALUES
       (#{q_marks})
     SQL
 
-    @id = QuestionDBConnection.instance.last_insert_row_id
+    @id = QuestionsDatabase.instance.last_insert_row_id
   end
     
   def self.where(options)
@@ -58,7 +55,7 @@ class ModelBase
       where_line = options
     end
 
-    data = QuestionDBConnection.instance.execute(<<-SQL, *vals)
+    data = QuestionsDatabase.instance.execute(<<-SQL, *vals)
       SELECT
         *
       FROM

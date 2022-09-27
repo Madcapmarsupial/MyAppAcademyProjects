@@ -5,26 +5,26 @@ require_relative 'user'
 require_relative 'reply'
 require_relative 'model_base'
 
-class QuestionFollow
+class QuestionFollow < ModelBase
   attr_accessor :id, :user_id, :question_id
 
-  def self.all
-    data = QuestionDBConnection.instance.execute("SELECT * FROM question_follows")
-    data.map { |datum| QuestionFollow.new(datum)}
-  end
+  # def self.all
+  #   data = QuestionsDatabase.instance.execute("SELECT * FROM question_follows")
+  #   data.map { |datum| QuestionFollow.new(datum)}
+  # end
 
-  def self.find_by_id(id)
-    data = QuestionDBConnection.instance.execute(<<-SQL, id)
-      SELECT *
-      FROM question_follows
-      WHERE id = ?
-    SQL
+  # def self.find_by_id(id)
+  #   data = QuestionsDatabase.instance.execute(<<-SQL, id)
+  #     SELECT *
+  #     FROM question_follows
+  #     WHERE id = ?
+  #   SQL
 
-    QuestionFollow.new(*data)
-  end
+  #   QuestionFollow.new(*data)
+  # end
 
   def self.followers_for_question_id(question_id)
-    data = QuestionDBConnection.instance.execute(<<-SQL, question_id)
+    data = QuestionsDatabase.instance.execute(<<-SQL, question_id)
       SELECT
         users.*
       FROM 
@@ -41,7 +41,7 @@ class QuestionFollow
   end
 
   def self.followed_questions_for_user_id(user_id)
-    data = QuestionDBConnection.instance.execute(<<-SQL, user_id)
+    data = QuestionsDatabase.instance.execute(<<-SQL, user_id)
       SELECT
         questions.*
       FROM
@@ -56,7 +56,7 @@ class QuestionFollow
   end
 
   def self.most_followed_questions(n)
-    data = QuestionDBConnection.instance.execute(<<-SQL, n)
+    data = QuestionsDatabase.instance.execute(<<-SQL, n)
       SELECT 
         questions.*
       FROM

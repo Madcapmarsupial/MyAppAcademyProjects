@@ -10,12 +10,12 @@ class User < ModelBase
   attr_accessor :id, :fname, :lname
 
   # def self.all
-  #   data = QuestionDBConnection.instance.execute("SELECT * FROM users")
+  #   data = QuestionsDatabase.instance.execute("SELECT * FROM users")
   #   data.map { |datum| User.new(datum)}
   # end
 
   # def self.find_by_id(id)
-  #   data = QuestionDBConnection.instance.execute(<<-SQL, id)
+  #   data = QuestionsDatabase.instance.execute(<<-SQL, id)
   #     SELECT *
   #     FROM users
   #     WHERE id = ?
@@ -25,7 +25,7 @@ class User < ModelBase
   # end
 
   def self.find_by_name(fname, lname)
-    data = QuestionDBConnection.instance.execute(<<-SQL, fname, lname)
+    data = QuestionsDatabase.instance.execute(<<-SQL, fname, lname)
       SELECT *
       FROM users
       WHERE fname = ?
@@ -63,7 +63,7 @@ class User < ModelBase
       #num of questions by (user_id) --> self.authored questions
         #likes on these questions   -->  spec_Q.num_likes
 
-    data = QuestionDBConnection.instance.execute(<<-SQL, self.id)
+    data = QuestionsDatabase.instance.execute(<<-SQL, self.id)
       SELECT
       SUM(CASE question_likes.id
             WHEN NULL THEN 0
