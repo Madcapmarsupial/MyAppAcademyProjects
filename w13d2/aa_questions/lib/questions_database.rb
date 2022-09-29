@@ -4,7 +4,7 @@ require 'singleton'
 class QuestionsDatabase < SQLite3::Database
   include Singleton
 
-  SQL_FILE = File.join(File.dirname(__FILE__), 'import_db.sql')
+  SQL_FILE = File.join(File.dirname(__FILE__), '../import_db.sql')
   DB_FILE = File.join(File.dirname(__FILE__), '../questions.db')
 
   def self.open
@@ -36,6 +36,16 @@ class QuestionsDatabase < SQLite3::Database
     instance.last_insert_row_id
   end
  
+   def self.get_first_row(*args)
+    instance.get_first_row(*args)
+  end
+
+  def self.get_first_value(*args)
+    instance.get_first_value(*args)
+  end
+
+
+
 end
 
 

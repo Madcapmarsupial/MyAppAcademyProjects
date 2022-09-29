@@ -32,6 +32,7 @@ class User < ModelBase
         AND lname = ?
     SQL
 
+    raise "Entry not found in database" if data.empty?
     User.new(*data)
   end
 

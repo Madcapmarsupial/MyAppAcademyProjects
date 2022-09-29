@@ -6,23 +6,23 @@ require_relative 'reply'
 require_relative 'model_base'
 
 
-class QuestionLike
+class QuestionLike < ModelBase
   attr_accessor :id, :question_id, :user_id
 
-  def self.all 
-    data = QuestionsDatabase.instance.execute("SELECT * FROM question_likes")
-    data.map { |datum| QuestionLike.new(datum)}
-  end
+  # def self.all 
+  #   data = QuestionsDatabase.instance.execute("SELECT * FROM question_likes")
+  #   data.map { |datum| QuestionLike.new(datum)}
+  # end
 
-  def self.find_by_id(id)
-    data = QuestionsDatabase.instance.execute(<<-SQL, id)
-      SELECT *
-      FROM question_likes
-      WHERE id = ?
-    SQL
+  # def self.find_by_id(id)
+  #   data = QuestionsDatabase.instance.execute(<<-SQL, id)
+  #     SELECT *
+  #     FROM question_likes
+  #     WHERE id = ?
+  #   SQL
 
-    QuestionLike.new(*data)
-  end
+  #   QuestionLike.new(*data)
+  # end
 
   def self.likers_for_question_id(question_id)
     data = QuestionsDatabase.instance.execute(<<-SQL, question_id)

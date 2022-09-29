@@ -41,5 +41,6 @@ describe QuestionFollow do
     it "lists the n most followed questions" do 
       expect(described_class.most_followed_questions(n).map(&:title)).to eql(["starwars","Who?"])
     end
+  end
 
 end

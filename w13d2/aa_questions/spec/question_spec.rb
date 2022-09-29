@@ -39,7 +39,7 @@ describe Question do
   describe "::most_liked" do 
     let(:questionlike) { class_double('QuestionLike').as_stubbed_const }
 
-      it "calls QuestionLike::most_liked_questions" do 
+    it "calls QuestionLike::most_liked_questions" do 
         expect(questionlike).to receive(:most_liked_questions).with(2)
         described_class.most_liked(2)
     end

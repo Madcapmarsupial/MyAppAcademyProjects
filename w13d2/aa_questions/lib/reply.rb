@@ -5,23 +5,23 @@ require_relative 'question_like'
 require_relative 'user'
 require_relative 'model_base'
 
-class Reply
+class Reply < ModelBase
   attr_accessor :id, :body, :user_id, :question_id, :parent_id
 
-  def self.all
-    data = QuestionsDatabase.instance.execute("SELECT * FROM replies")
-    data.map { |datum| Reply.new(datum)}
-  end
+  # def self.all
+  #   data = QuestionsDatabase.instance.execute("SELECT * FROM replies")
+  #   data.map { |datum| Reply.new(datum)}
+  # end
 
-  def self.find_by_id(id)
-    data = QuestionsDatabase.instance.execute(<<-SQL, id)
-      SELECT *
-      FROM replies
-      WHERE id = ?
-    SQL
+  # def self.find_by_id(id)
+  #   data = QuestionsDatabase.instance.execute(<<-SQL, id)
+  #     SELECT *
+  #     FROM replies
+  #     WHERE id = ?
+  #   SQL
 
-    Reply.new(*data)
-  end
+  #   Reply.new(*data)
+  # end
 
   def self.find_by_user_id(user_id)
     data = QuestionsDatabase.instance.execute(<<-SQL, user_id)
