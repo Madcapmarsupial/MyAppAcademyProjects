@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+#currentlty does not validate entered full urls
+
+visit = Proc.new do |user|
+  print "
+  plaese enter a shortened url
+  > "
+  url_tag = gets.chomp
+  url_item = ShortenedUrl.where(short_url: url_tag).first
+  Visit.record_visit!(user, url_item) 
+  uri = url_item.long_url
+  print "
+  Launching... {#uri} 
+  "
+  Launchy.open( uri ) do |exception|
+    puts "Attempted to open #{uri} and failed because #{exception}"
+  end
+end
+
+shorten = Proc.new do |user|
+  print "\nplaese enter the full url
+  > "
+  long_url = gets.chomp
+  short_url = ShortenedUrl.create_short_url!(user, long_url)
+  # returns true
+  #we need to display the created short url
+  print "Short url is: #{short_url}"
+end
+
+print "
+Input your email:
+> "
+user_email = gets.chomp 
+user = User.where(email: user_email).first
+raise "error! email --> #{user_email} <-- not in database" if user == nil
+print "
+What do you want to do?
+0. Create shortened URL
+1. Visit shortened URL 
+> "
+action = gets.chomp
+commands = {'0' => shorten, '1' => visit}
+raise '--> #{action} <-- is not a valid command!' unless commands[action] != nil
+commands[action].call(user)
+print "
+Goodbye!
+
+"
