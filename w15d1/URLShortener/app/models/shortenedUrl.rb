@@ -30,6 +30,7 @@ class ShortenedUrl < ApplicationRecord
 
   has_many(
     :visits,
+    dependent: :destroy,
     class_name: 'Visit',
     foreign_key: :url_id,
     primary_key: :id
@@ -41,12 +42,35 @@ class ShortenedUrl < ApplicationRecord
     source: :visitor
 
   has_many :tags,
+    dependent: :destroy,
     class_name: 'TagTopic',
     foreign_key: :short_url_id,
     primary_key: :id
 
+  has_many :votes,
+    dependent: :destroy,
+    class_name: 'Vote',
+    foreign_key: :url_id,
+    primary_key: :id
+
+    has_many :voters, 
+    through: :votes, 
+    source: :voter
+
+  def self.create_code
+    code = gets.chomp
+    if code == ""
+      code = ShortenedUrl.generate_code
+    end
+    code 
+  end
+
+  def self.generate_code
+    dictionary = Rails.root + 'app/assets/dictionary.txt'
+    code = dictionary.read.split("\n").sample + "-" + dictionary.read.split("\n").sample
+  end
+
   def self.random_code
-    #refactor
     unique = false
     code = ""
     long_code = SecureRandom::urlsafe_base64.split("")
@@ -59,32 +83,51 @@ class ShortenedUrl < ApplicationRecord
 
       code = short_code.join("")
       unique = true if !ShortenedUrl.where(short_url: code).exists?
-        
     end
     return code
 
   end
 
   def self.create_short_url!(user, url)
-    code = ShortenedUrl.random_code
+    if user.premium
+      code = ShortenedUrl.create_code
+    else
+      code = ShortenedUrl.generate_code
+    end
     short_url_obj = ShortenedUrl.new(user_id: user.id, short_url: code, long_url: url)
     short_url_obj.save!
-    code
+    short_url_obj
+  end
+
+  def self.hot(n)
+  #ShortenedUrl::hot, sorted by vote score in the last (n) minutes
+  #look through votes within the last n minutes
+    ShortenedUrl.joins(:votes).where('votes.created_at > ?', n.minute.ago)
+    .group('shortened_urls.id')
+      .order(Arel.sql('COUNT(shortened_urls.id) DESC;'))
+
+  end
+
+  def self.top
+  #ShortenedUrl::top, sorted by total vote score
+     ShortenedUrl.joins(:votes)
+      .group('shortened_urls.id')
+      .order(Arel.sql('COUNT(shortened_urls.id) DESC;'))
   end
 
   def self.prune(n)
-    #select()
-    #.where("created_at < ?", n.minutes.ago.to_s)
-
-
-    #if visit.updated_at > n.minutes.ago
-    #if url.visits.empty? 
-    
-    #&& url.created_at < n.minutes.ago
-    #ShortenedUrl.where("created_at < ?", n.minutes.ago.to_s)
-    #select----.delete
+    prune_list = ShortenedUrl.joins(:submitter).where.missing(:visits)
+      .and(ShortenedUrl.where('shortened_urls.created_at < ?', n.minute.ago))
+      .and(ShortenedUrl.where('users.premium = false'))
+        .or(ShortenedUrl.where('visits.updated_at < ?', n.minute.ago))
+        .and(ShortenedUrl.where('users.premium = false'))
+    .destroy_all
+    prune_list.select do |url|
+       url.visits.delete_all 
+       url.tags.delete_all
+       url.votes.delete_all
+    end
   end
-
 
   def num_clicks
     visits.count
@@ -113,3 +156,9 @@ class ShortenedUrl < ApplicationRecord
     end
   end
 end
+
+#url.visits.detroy_all
+#User.includes(:posts).where('posts.name = ?', 'example').references(:posts)
+
+
+
