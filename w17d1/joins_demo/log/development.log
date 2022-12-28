@@ -175,3 +175,32 @@ Migrating to CreateComments (20171219010736)
   [1m[36mComment Load (0.2ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."parent_comment_id" = ? LIMIT ?[0m  [["parent_comment_id", 1], ["LIMIT", 11]]
   [1m[36mComment Load (0.3ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" ORDER BY "comments"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
   [1m[36mComment Load (0.3ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."parent_comment_id" = ? ORDER BY "comments"."id" ASC LIMIT ?[0m  [["parent_comment_id", 1], ["LIMIT", 1]]
+DEPRECATION WARNING: Using legacy connection handling is deprecated. Please set
+`legacy_connection_handling` to `false` in your application.
+
+The new connection handling does not support `connection_handlers`
+getter and setter.
+
+Read more about how to migrate at: https://guides.rubyonrails.org/active_record_multiple_databases.html#migrate-to-the-new-connection-handling
+ (called from block (2 levels) in <class:Railtie> at /Users/samgreen/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/activerecord-7.0.4/lib/active_record/railtie.rb:264)
+  [1m[36mComment Load (0.1ms)[0m  [1m[34mSELECT "comments".* FROM "comments" INNER JOIN "users" ON "users"."id" = "comments"."author_id" WHERE "users"."user_name" = ?[0m  [["user_name", "tamboer"]]
+  [1m[36mComment Load (0.5ms)[0m  [1m[34mSELECT "comments".* FROM "comments" INNER JOIN "users" ON "users"."id" = "comments"."author_id"[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mComment Load (0.2ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."author_id" = ?[0m  [["author_id", 1]]
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."author_id" = ?[0m  [["author_id", 1]]
+  [1m[36mComment Load (0.5ms)[0m  [1m[34mSELECT "comments".* FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "comments"."author_id" = ?[0m  [["author_id", 1]]
+  [1m[36mComment Load (0.3ms)[0m  [1m[34mSELECT "comments".* FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "comments"."author_id" = ?[0m  [["author_id", 1]]
+  [1m[36mComment Load (0.4ms)[0m  [1m[34mSELECT "comments".* FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "comments"."author_id" = ? ORDER BY id[0m  [["author_id", 1]]
+  [1m[36mComment Load (0.6ms)[0m  [1m[34mSELECT "comments".* FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "comments"."author_id" = ? ORDER BY post_id[0m  [["author_id", 1]]
+  [1m[36mComment Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "comments"."author_id" = ?[0m  [["author_id", 1]]
+  [1m[36mComment Load (0.5ms)[0m  [1m[34mSELECT "comments".* FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "comments"."author_id" = ? ORDER BY post_id[0m  [["author_id", 1]]
+  [1m[36mComment Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "comments"."author_id" = ?[0m  [["author_id", 1]]
+  [1m[36mComment Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) AS "count_all", "comments"."post_id" AS "comments_post_id" FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "comments"."author_id" = ? GROUP BY "comments"."post_id"[0m  [["author_id", 1]]
+  [1m[36mComment Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) AS "count_all", "comments"."post_id" AS "comments_post_id" FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "comments"."author_id" = ? GROUP BY "comments"."post_id"[0m  [["author_id", 1]]
+  [1m[36mPost Load (0.5ms)[0m  [1m[34mSELECT posts.*, COUNT(*) as comments_count FROM "posts" INNER JOIN "comments" ON "comments"."post_id" = "posts"."id" WHERE "posts"."author_id" = ? GROUP BY "posts"."id"[0m  [["author_id", 1]]
+  [1m[36mPost Load (0.5ms)[0m  [1m[34mSELECT posts.*, COUNT(*) as comments_count FROM "posts" INNER JOIN "comments" ON "comments"."post_id" = "posts"."id" WHERE "posts"."author_id" = ? GROUP BY "posts"."id"[0m  [["author_id", 1]]
+  [1m[36mPost Load (0.5ms)[0m  [1m[34mSELECT posts.*, COUNT(*) AS comments_count FROM "posts" INNER JOIN "comments" ON "comments"."post_id" = "posts"."id" WHERE "posts"."author_id" = ? GROUP BY "posts"."id"[0m  [["author_id", 1]]
+  [1m[36mComment Load (0.4ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."post_id" = ?[0m  [["post_id", 1]]
+  [1m[36mPost Load (0.8ms)[0m  [1m[34mSELECT "posts".* FROM "posts" ORDER BY posts_order ASC, created_at DESC[0m
+  [1m[36mPost Load (0.4ms)[0m  [1m[34mSELECT "posts".* FROM "posts" ORDER BY id ASC, created_at DESC[0m
+  [1m[36mPost Load (0.4ms)[0m  [1m[34mSELECT "posts".* FROM "posts" ORDER BY id ASC, created_at DESC[0m

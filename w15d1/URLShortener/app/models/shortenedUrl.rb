@@ -15,11 +15,13 @@
 #  index_shortened_urls_on_user_id    (user_id)
 #
 class ShortenedUrl < ApplicationRecord
-  validate :no_spamming
-  validate :nonpremium_max
+  validate :no_spamming, :nonpremium_max
   validates :short_url, presence: true, uniqueness: true  
-  validates :user_id, presence: true 
-  validates :long_url, presence: true
+  validates :user_id, :long_url, presence: true 
+
+  # Remember, belongs_to is just a method where the first argument is
+  # the name of the association, and the second argument is an options
+  # hash.
 
   belongs_to(
     :submitter,
@@ -122,6 +124,7 @@ class ShortenedUrl < ApplicationRecord
         .or(ShortenedUrl.where('visits.updated_at < ?', n.minute.ago))
         .and(ShortenedUrl.where('users.premium = false'))
     .destroy_all
+    
     prune_list.select do |url|
        url.visits.delete_all 
        url.tags.delete_all
@@ -139,7 +142,11 @@ class ShortenedUrl < ApplicationRecord
 
   def num_recent_uniques
     time_limit = 10.minutes.ago.to_s
-    visits.select(:visitor_id).where(["created_at > ? ", time_limit ]).distinct.count
+    visits
+      .select(:visitor_id)
+      .where(["created_at > ? ", time_limit ])
+      .distinct
+      .count
   end
 
   private

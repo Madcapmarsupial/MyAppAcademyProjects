@@ -20,5 +20,4 @@ describe ModelBase do
     end
 
   end
-
 end

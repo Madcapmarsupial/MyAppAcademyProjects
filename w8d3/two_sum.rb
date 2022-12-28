@@ -76,7 +76,7 @@ def two_sum?(arr, target)
 
     hash_sum_pairs = 0
     arr.each do |num|
-        #if the current num in the array is not a key/difference within the hash
+        #if the current num in the array then it is not a key/difference within the hash
         # then this is not part of a sum pair and we skip it
         next if hash_map[num] == nil 
         #otherwise we know it is a pair
@@ -90,3 +90,32 @@ end
 arr = [0, 1, 5, 7]
 p two_sum?(arr, 6) # => should be true
 p two_sum?(arr, 10) # => should be false
+
+
+
+
+# 13 
+
+# 1, 3, 2, 7, 8X
+
+#13
+#  bases 12, 10, 11, 6,   5X
+
+#     base 12  
+        #11=>(1), 9=>3, 10=>2,   5=>7   4 =>8   
+ 
+#   base  10   
+        #9=>1,   7=>(3) , 8=>2,   3=>7    2 => 8
+
+#     base 11  
+            #10=>1,  8=>3,   9=>(2),   4=>7   3 => 8
+
+#     base 6   
+            #5=>1,    3=>3,     4=>2, -=1>(7)  -2=8 
+
+
+
+    # base 5   4=1    2=3     3=2   -2=7  (-3)=>8
+
+    
+    
